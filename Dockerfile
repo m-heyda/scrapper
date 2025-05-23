@@ -7,6 +7,7 @@ WORKDIR /app
 # Copy dependencies and install
 COPY package*.json ./
 RUN npm install
+RUN npx puppeteer browsers install chrome
 
 # Copy app source
 COPY . .
