@@ -1,19 +1,21 @@
-# Use Puppeteer's official base image with all dependencies preinstalled
-FROM ghcr.io/puppeteer/puppeteer:latest
+FROM node:18-slim
 
-# Set working directory
-WORKDIR /app
+ENV PUPPETEER_SKIP_DOWNLOAD=false
 
-# Copy dependencies and install
+# Puppeteer dependencies
+RUN apt-get update && apt-get install -y \
+  wget ca-certificates fonts-liberation libappindicator3-1 libasound2 \
+  libatk-bridge2.0-0 libatk1.0-0 libcups2 libdbus-1-3 \
+  libgdk-pixbuf2.0-0 libnspr4 libnss3 libx11-xcb1 libxcomposite1 \
+  libxdamage1 libxrandr2 xdg-utils libu2f-udev libvulkan1 \
+  && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+
 COPY package*.json ./
 RUN npm install
-RUN npx puppeteer browsers install chrome
 
-# Copy app source
 COPY . .
 
-# Expose the port your app runs on
 EXPOSE 3000
-
-# Run your app
 CMD ["yarn", "start"]
