@@ -16,4 +16,4 @@ COPY . .
 EXPOSE 3000
 
 # Run your app
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
